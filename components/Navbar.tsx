@@ -21,6 +21,10 @@ export default function Navbar() {
           Login
         </Link>
 
+        <Link href="/create-invoice"
+        className="hover:text-gray-300">
+        Create-Invoice
+        </Link>
       </div>
 
     </div>
