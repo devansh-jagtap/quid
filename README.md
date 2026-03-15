@@ -1,8 +1,8 @@
-# Quid Invoice Generator 🧾
+# Quid Invoice Generator 
 
 A modern, full-stack invoice management application built with Next.js 14, Prisma, and NextAuth. Create, manage, and track professional invoices with ease.
 
-## 🚀 Tech Stack
+##  Tech Stack
 
 ### Frontend
 - **Next.js 14** - React framework with App Router
@@ -21,7 +21,7 @@ A modern, full-stack invoice management application built with Next.js 14, Prism
 - **html-to-image** - Invoice preview to image conversion
 - **Lucide React** - Icon library
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 quid/
@@ -69,7 +69,7 @@ quid/
 └── utils/                        # Helper functions
 ```
 
-## 🛠️ Setup Instructions
+##  Setup Instructions
 
 ### Prerequisites
 - Node.js 18+ installed
@@ -122,7 +122,7 @@ npm run dev
 
 Visit [http://localhost:3000](http://localhost:3000)
 
-## 📖 Usage Guide
+##  Usage Guide
 
 ### 1. Authentication
 - Navigate to the homepage
@@ -147,7 +147,7 @@ Each invoice has its own unique URL:
 - `/invoice/[id]` - View specific invoice
 - Example: `/invoice/abc123def456`
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -155,7 +155,7 @@ Each invoice has its own unique URL:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 License
+##  License
 
 MIT License - feel free to use this project for personal or commercial purposes.
 
