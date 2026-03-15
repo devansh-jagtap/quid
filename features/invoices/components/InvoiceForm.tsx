@@ -137,7 +137,7 @@ export default function InvoiceForm({
   };
 
   return (
-    <div className="min-h-screen bg-background md:ml-64">
+    <div className="min-h-screen bg-background">
       <div className="p-8">
         {/* Header */}
         <div className="mb-8">

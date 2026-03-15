@@ -43,7 +43,7 @@ export default async function InvoiceDetailPage({
 
   if (!invoice) {
     return (
-      <div className="min-h-screen bg-background md:ml-64 p-8">
+      <div className="min-h-screen bg-background p-8">
         <Card className="bg-card border-border">
           <CardHeader>
             <CardTitle>Invoice Not Found</CardTitle>
@@ -63,7 +63,7 @@ export default async function InvoiceDetailPage({
   }
 
   return (
-    <div className="min-h-screen bg-background md:ml-64">
+    <div className="min-h-screen bg-background">
       <div className="p-8 max-w-4xl">
         <div className="mb-6 flex items-center justify-between">
           <Link href="/dashboard">

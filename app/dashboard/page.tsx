@@ -34,7 +34,7 @@ export default async function Dashboard() {
   });
 
   return (
-    <div className="min-h-screen bg-background md:ml-64">
+    <div className="min-h-screen bg-background">
       <div className="px-4 py-8 md:px-8">
         {/* Header */}
         <div className="mb-8">
