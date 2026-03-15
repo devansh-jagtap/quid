@@ -47,8 +47,9 @@ export default async function EditInvoicePage({
       initialData={{
         id: invoice.id,
         clientName: invoice.clientName,
-        clientEmail: "",
+        clientEmail: invoice.clientEmail || "",
         items: invoice.items.map((item) => ({
+          id: item.id,
           name: item.name,
           quantity: item.quantity,
           price: item.price,

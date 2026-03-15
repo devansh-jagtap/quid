@@ -45,7 +45,7 @@ export async function POST(req: Request) {
 
   const body = await req.json();
 
-  const { clientName, items, subtotal, total } = body;
+  const { clientName, clientEmail, items, subtotal, total } = body;
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
@@ -58,6 +58,7 @@ export async function POST(req: Request) {
   const invoice = await prisma.invoice.create({
     data: {
       clientName,
+      clientEmail: clientEmail || "",
       subtotal,
       total,
       userId: user.id,

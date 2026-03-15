@@ -2,6 +2,7 @@ import { InvoiceItem } from "../types";
 
 type SaveInvoiceDTO = {
   clientName: string;
+  clientEmail: string;
   items: InvoiceItem[];
   subtotal: number;
   total: number;

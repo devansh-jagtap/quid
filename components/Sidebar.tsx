@@ -12,8 +12,11 @@ import {
   ChevronDown,
   PanelLeftClose,
   PanelLeftOpen,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
@@ -23,6 +26,7 @@ export default function Sidebar() {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const pathname = usePathname();
   const { data: session } = useSession();
+  const { theme, setTheme } = useTheme();
 
   const menuItems = [
     {
@@ -189,6 +193,20 @@ export default function Sidebar() {
                 </div>
                 <Button
                   onClick={() => {
+                    setTheme(theme === "dark" ? "light" : "dark");
+                  }}
+                  variant="outline"
+                  className="w-full justify-start gap-2 rounded-none border-0 m-0"
+                >
+                  {theme === "dark" ? (
+                    <Sun className="h-4 w-4" />
+                  ) : (
+                    <Moon className="h-4 w-4" />
+                  )}
+                  {theme === "dark" ? "Light Mode" : "Dark Mode"}
+                </Button>
+                <Button
+                  onClick={() => {
                     setUserDropdownOpen(false);
                     signOut({ callbackUrl: "/" });
                   }}
@@ -271,6 +289,19 @@ export default function Sidebar() {
               </p>
             </div>
           </div>
+
+          <Button
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            variant="outline"
+            className="w-full justify-start gap-2"
+          >
+            {theme === "dark" ? (
+              <Sun className="h-4 w-4" />
+            ) : (
+              <Moon className="h-4 w-4" />
+            )}
+            {theme === "dark" ? "Light Mode" : "Dark Mode"}
+          </Button>
 
           <Button
             onClick={() => {

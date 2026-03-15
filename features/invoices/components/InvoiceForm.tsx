@@ -8,6 +8,7 @@ import { toPng } from "html-to-image";
 import { InvoiceItem } from "../types";
 import { saveInvoice } from "../actions/saveInvoice";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { templates } from "../templates";
 
 interface InvoiceFormProps {
   initialData?: {
@@ -34,6 +35,7 @@ export default function InvoiceForm({
   const [items, setItems] = useState<InvoiceItem[]>(
     initialData?.items || [
       {
+        id: crypto.randomUUID(),
         name: "",
         quantity: 1,
         price: 0,
@@ -41,8 +43,10 @@ export default function InvoiceForm({
     ],
   );
 
+  const [selectedTemplate, setSelectedTemplate] = useState<keyof typeof templates>("simple");
+
   const addItem = () => {
-    setItems([...items, { name: "", quantity: 1, price: 0 }]);
+    setItems([...items, { id: crypto.randomUUID(), name: "", quantity: 1, price: 0 }]);
   };
 
   const removeItem = (index: number) => {
@@ -80,6 +84,7 @@ export default function InvoiceForm({
           },
           body: JSON.stringify({
             clientName,
+            clientEmail,
             items,
             subtotal,
             total: subtotal,
@@ -96,6 +101,7 @@ export default function InvoiceForm({
         // Create new invoice
         const data = await saveInvoice({
           clientName,
+          clientEmail,
           items,
           subtotal,
           total: subtotal,
@@ -112,28 +118,55 @@ export default function InvoiceForm({
   };
 
   const downloadPDF = async () => {
-    const element = document.getElementById("invoice-template");
-    if (!element) return;
+    const previewContainer = document.getElementById("preview-scroll-container");
+    const element = document.getElementById("invoice-preview-root");
+    if (!element || !previewContainer) return;
 
-    const imgData = await toPng(element, { pixelRatio: 2 });
+    // 1. Temporarily switch to light mode for PDF
+    const htmlEl = document.documentElement;
+    const wasDark = htmlEl.classList.contains("dark");
+    if (wasDark) htmlEl.classList.remove("dark");
 
-    const img = new Image();
-    img.src = imgData;
-    await new Promise((resolve) => {
-      img.onload = resolve;
-    });
+    // 2. Temporarily remove scroll container constraints so the full invoice is rendered
+    const savedOverflow = previewContainer.style.overflow;
+    const savedMaxHeight = previewContainer.style.maxHeight;
+    const savedHeight = previewContainer.style.height;
+    previewContainer.style.overflow = "visible";
+    previewContainer.style.maxHeight = "none";
+    previewContainer.style.height = "auto";
 
-    const pdf = new jsPDF();
+    // 3. Give browser a frame to re-layout before capturing
+    await new Promise((r) => requestAnimationFrame(r));
 
-    const imgWidth = 210;
-    const imgHeight = (img.height * imgWidth) / img.width;
+    try {
+      const imgData = await toPng(element, { 
+        pixelRatio: 2,
+        backgroundColor: "#ffffff",
+      });
 
-    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+      const img = new Image();
+      img.src = imgData;
+      await new Promise((resolve) => {
+        img.onload = resolve;
+      });
 
-    const filename = isEditing
-      ? `invoice-${initialData?.id?.slice(0, 8)}-updated.pdf`
-      : "invoice.pdf";
-    pdf.save(filename);
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (img.height * pdfWidth) / img.width;
+
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+      const filename = isEditing
+        ? `invoice-${initialData?.id?.slice(0, 8)}-updated.pdf`
+        : "invoice.pdf";
+      pdf.save(filename);
+    } finally {
+      // 4. Restore everything
+      previewContainer.style.overflow = savedOverflow;
+      previewContainer.style.maxHeight = savedMaxHeight;
+      previewContainer.style.height = savedHeight;
+      if (wasDark) htmlEl.classList.add("dark");
+    }
   };
 
   return (
@@ -149,9 +182,9 @@ export default function InvoiceForm({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Form Section */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="space-y-6">
             {/* Client Information */}
             <Card className="bg-card border-border">
               <CardHeader>
@@ -278,13 +311,23 @@ export default function InvoiceForm({
           </div>
 
           {/* Preview Section */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-8">
-              <h2 className="text-xl font-semibold text-foreground mb-4">
-                Preview
-              </h2>
+          <div>
+            <div className="sticky top-8 space-y-4">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold text-foreground">
+                  Preview
+                </h2>
+                <select
+                  value={selectedTemplate}
+                  onChange={(e) => setSelectedTemplate(e.target.value as keyof typeof templates)}
+                  className="px-3 py-1.5 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <option value="simple">Simple Template</option>
+                  <option value="modern">Modern Template</option>
+                </select>
+              </div>
               <div
-                id="invoice-template"
+                id="preview-scroll-container"
                 className="bg-card border border-border rounded-lg p-4 overflow-auto max-h-[calc(100vh-200px)]"
               >
                 <InvoicePreview
@@ -292,6 +335,7 @@ export default function InvoiceForm({
                   subtotal={subtotal}
                   clientName={clientName}
                   clientEmail={clientEmail}
+                  templateId={selectedTemplate}
                 />
               </div>
             </div>

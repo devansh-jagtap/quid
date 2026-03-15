@@ -28,7 +28,7 @@ export async function PUT(
   }
 
   const body = await req.json();
-  const { clientName, items, subtotal, total } = body;
+  const { clientName, clientEmail, items, subtotal, total } = body;
 
   // Check if invoice exists and belongs to user
   const existingInvoice = await prisma.invoice.findUnique({
@@ -54,6 +54,7 @@ export async function PUT(
     where: { id: id },
     data: {
       clientName,
+      clientEmail: clientEmail || "",
       subtotal,
       total,
       items: {
