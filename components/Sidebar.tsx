@@ -46,7 +46,7 @@ export default function Sidebar() {
       {/* Mobile Toggle Button */}
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="fixed top-20 left-4 z-40 md:hidden p-2 rounded-md bg-background border border-border hover:bg-muted"
+        className="fixed top-4 left-4 z-40 md:hidden p-2 rounded-md bg-background border border-border hover:bg-muted"
       >
         {isMobileOpen ? (
           <X className="h-5 w-5" />
@@ -56,7 +56,7 @@ export default function Sidebar() {
       </button>
 
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex md:flex-col w-64 border-r border-border bg-background min-h-[calc(100vh-64px)] fixed left-0 top-16 z-30">
+      <aside className="hidden md:flex md:flex-col w-64 border-r border-border bg-background h-screen fixed left-0 top-0 z-30">
         {/* Logo Section */}
         <div className="flex items-center gap-3 border-b border-border p-6">
           <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center flex-shrink-0">
@@ -165,7 +165,7 @@ export default function Sidebar() {
 
       {/* Mobile Sidebar */}
       <aside
-        className={`fixed left-0 top-16 h-[calc(100vh-64px)] w-64 border-r border-border bg-background transition-transform duration-300 z-30 md:hidden ${
+        className={`fixed left-0 top-0 h-screen w-64 border-r border-border bg-background transition-transform duration-300 z-30 md:hidden ${
           isMobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
