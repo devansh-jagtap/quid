@@ -1,4 +1,4 @@
-import InvoiceForm from "../../../features/invoices/components/InvoiceForm";
+import InvoiceForm from "@/features/invoices/components/InvoiceForm";
 
 export default function CreateInvoicePage() {
   return <InvoiceForm />;

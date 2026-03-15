@@ -1,5 +1,5 @@
-import { prisma } from "../../../../lib/prisma";
-import { authOptions } from "../../../../lib/auth";
+import { prisma } from "@/lib/prisma";
+import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 
 export async function GET() {
