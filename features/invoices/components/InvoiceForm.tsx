@@ -1,23 +1,45 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import InvoicePreview from "./InvoicePreview";
 import jsPDF from "jspdf";
 import { toPng } from "html-to-image";
 import { InvoiceItem } from "../types";
 import { saveInvoice } from "../actions/saveInvoice";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function InvoiceForm() {
-  const [clientName, setClientName] = useState("");
-  const [clientEmail, setClientEmail] = useState("");
+interface InvoiceFormProps {
+  initialData?: {
+    id: string;
+    clientName: string;
+    clientEmail: string;
+    items: InvoiceItem[];
+    subtotal: number;
+    total: number;
+  };
+  isEditing?: boolean;
+}
 
-  const [items, setItems] = useState<InvoiceItem[]>([
-    {
-      name: "",
-      quantity: 1,
-      price: 0,
-    },
-  ]);
+export default function InvoiceForm({
+  initialData,
+  isEditing = false,
+}: InvoiceFormProps) {
+  const router = useRouter();
+  const [clientName, setClientName] = useState(initialData?.clientName || "");
+  const [clientEmail, setClientEmail] = useState(
+    initialData?.clientEmail || "",
+  );
+
+  const [items, setItems] = useState<InvoiceItem[]>(
+    initialData?.items || [
+      {
+        name: "",
+        quantity: 1,
+        price: 0,
+      },
+    ],
+  );
 
   const addItem = () => {
     setItems([...items, { name: "", quantity: 1, price: 0 }]);
@@ -49,15 +71,40 @@ export default function InvoiceForm() {
 
   const handleSaveInvoice = async () => {
     try {
-      const data = await saveInvoice({
-        clientName,
-        items,
-        subtotal,
-        total: subtotal,
-      });
+      if (isEditing && initialData?.id) {
+        // Update existing invoice
+        const response = await fetch(`/api/invoices/${initialData.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            clientName,
+            items,
+            subtotal,
+            total: subtotal,
+          }),
+        });
 
-      console.log("Invoice saved:", data);
-      alert("Invoice saved successfully!");
+        if (!response.ok) {
+          throw new Error("Failed to update invoice");
+        }
+
+        alert("Invoice updated successfully!");
+        router.push(`/invoice/${initialData.id}`);
+      } else {
+        // Create new invoice
+        const data = await saveInvoice({
+          clientName,
+          items,
+          subtotal,
+          total: subtotal,
+        });
+
+        console.log("Invoice saved:", data);
+        alert("Invoice saved successfully!");
+        router.push("/dashboard");
+      }
     } catch (error) {
       console.error("Error saving invoice:", error);
       alert("Error saving invoice");
@@ -83,105 +130,172 @@ export default function InvoiceForm() {
 
     pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
 
-    pdf.save("invoice.pdf");
+    const filename = isEditing
+      ? `invoice-${initialData?.id?.slice(0, 8)}-updated.pdf`
+      : "invoice.pdf";
+    pdf.save(filename);
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-gray-100">
-      <h1 className="text-3xl font-bold mb-8">Create Invoice</h1>
-
-      <div className="bg-gray-200 shadow rounded-lg p-6">
-        <div className="bg-white shadow rounded-lg p-6 space-y-6">
-          <h2 className="text-xl font-semibold">Client Information</h2>
-
-          <input
-            value={clientName}
-            onChange={(e) => setClientName(e.target.value)}
-            placeholder="Client Name"
-            className="w-full border p-3 rounded"
-          />
-
-          <input
-            value={clientEmail}
-            onChange={(e) => setClientEmail(e.target.value)}
-            placeholder="Client Email"
-            className="w-full border p-3 rounded"
-          />
+    <div className="min-h-screen bg-background md:ml-64">
+      <div className="p-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-foreground mb-2">
+            Create Invoice
+          </h1>
+          <p className="text-muted-foreground">
+            Fill in the details below to create a new invoice
+          </p>
         </div>
-        <div className="bg-white shadow rounded-lg p-6 mt-2 space-y-6">
-          <h2 className="text-2xl">Items</h2>
-          {items.map((item, index) => (
-            <div key={index} className="grid grid-cols-4 gap-4 mb-4">
-              <input
-                value={item.name}
-                onChange={(e) => updateItem(index, "name", e.target.value)}
-                placeholder="Item name"
-                className="border p-2 rounded"
-              />
 
-              <input
-                type="number"
-                value={item.quantity}
-                onChange={(e) =>
-                  updateItem(index, "quantity", Number(e.target.value))
-                }
-                placeholder="Qty"
-                className="border p-2 rounded"
-              />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Form Section */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Client Information */}
+            <Card className="bg-card border-border">
+              <CardHeader>
+                <CardTitle>Client Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Client Name
+                  </label>
+                  <input
+                    value={clientName}
+                    onChange={(e) => setClientName(e.target.value)}
+                    placeholder="Enter client name"
+                    className="w-full px-4 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Client Email
+                  </label>
+                  <input
+                    value={clientEmail}
+                    onChange={(e) => setClientEmail(e.target.value)}
+                    placeholder="Enter email address"
+                    className="w-full px-4 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+              </CardContent>
+            </Card>
 
-              <input
-                type="number"
-                value={item.price}
-                onChange={(e) =>
-                  updateItem(index, "price", Number(e.target.value))
-                }
-                placeholder="Price"
-                className="border p-2 rounded"
-              />
+            {/* Invoice Items */}
+            <Card className="bg-card border-border">
+              <CardHeader>
+                <CardTitle>Invoice Items</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  {items.map((item, index) => (
+                    <div
+                      key={index}
+                      className="grid grid-cols-12 gap-3 items-end"
+                    >
+                      <input
+                        value={item.name}
+                        onChange={(e) =>
+                          updateItem(index, "name", e.target.value)
+                        }
+                        placeholder="Item name"
+                        className="col-span-6 px-4 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <input
+                        type="number"
+                        value={item.quantity}
+                        onChange={(e) =>
+                          updateItem(index, "quantity", Number(e.target.value))
+                        }
+                        placeholder="Qty"
+                        className="col-span-2 px-4 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <input
+                        type="number"
+                        value={item.price}
+                        onChange={(e) =>
+                          updateItem(index, "price", Number(e.target.value))
+                        }
+                        placeholder="Price"
+                        className="col-span-2 px-4 py-2 border border-input rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      <button
+                        onClick={() => removeItem(index)}
+                        className="col-span-2 px-3 py-2 bg-destructive/10 text-destructive hover:bg-destructive/20 rounded-lg transition-colors"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  onClick={addItem}
+                  className="w-full px-4 py-2 border-2 border-dashed border-border text-foreground hover:bg-muted rounded-lg transition-colors font-medium"
+                >
+                  + Add Item
+                </button>
+              </CardContent>
+            </Card>
+
+            {/* Subtotal */}
+            <div className="flex justify-end">
+              <div className="w-64">
+                <div className="flex justify-between py-2 border-t border-border">
+                  <span className="text-foreground">Subtotal:</span>
+                  <span className="font-semibold text-foreground">
+                    ${subtotal.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3 justify-end">
+              {isEditing && (
+                <button
+                  onClick={() => router.back()}
+                  className="px-6 py-2 border border-border text-foreground hover:bg-muted rounded-lg transition-colors font-medium"
+                >
+                  Cancel
+                </button>
+              )}
               <button
-                onClick={() => removeItem(index)}
-                className="bg-red-500 text-white rounded-lg px-4 py-2"
+                onClick={downloadPDF}
+                className="px-6 py-2 border border-border text-foreground hover:bg-muted rounded-lg transition-colors font-medium"
               >
-                Remove
+                Download PDF
+              </button>
+              <button
+                onClick={handleSaveInvoice}
+                className="px-6 py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg transition-colors font-medium"
+              >
+                {isEditing ? "Update Invoice" : "Save Invoice"}
               </button>
             </div>
-          ))}
-          <div className="flex justify-center items-center gap-5 w-full">
-            <button
-              onClick={addItem}
-              className="bg-black text-white px-6 py-2 rounded-lg"
-            >
-              Add Item
-            </button>
           </div>
 
-          <div className="mt-6 text-right">
-            <p className="text-lg">Subtotal: ${subtotal}</p>
+          {/* Preview Section */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-8">
+              <h2 className="text-xl font-semibold text-foreground mb-4">
+                Preview
+              </h2>
+              <div
+                id="invoice-template"
+                className="bg-card border border-border rounded-lg p-4 overflow-auto max-h-[calc(100vh-200px)]"
+              >
+                <InvoicePreview
+                  items={items}
+                  subtotal={subtotal}
+                  clientName={clientName}
+                  clientEmail={clientEmail}
+                />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className="mt-10">
-        <div id="invoice-template">
-          <InvoicePreview
-            items={items}
-            subtotal={subtotal}
-            clientName={clientName}
-            clientEmail={clientEmail}
-          />
-        </div>
-        <div className="flex gap-4 mt-6">
-          <button
-            onClick={downloadPDF}
-            className="bg-green-600 text-white px-6 py-3 rounded"
-          >
-            Download PDF
-          </button>
-          <button
-            onClick={handleSaveInvoice}
-            className="bg-blue-600 text-white px-6 py-3 rounded"
-          >
-            Save Invoice
-          </button>
         </div>
       </div>
     </div>

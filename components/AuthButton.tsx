@@ -11,7 +11,7 @@ export default function AuthButton() {
   if (status === "loading") {
     return (
       <div className="flex items-center gap-2">
-        <div className="h-8 w-20 bg-gray-200 animate-pulse rounded" />
+        <div className="h-8 w-20 bg-muted animate-pulse rounded" />
       </div>
     );
   }
@@ -29,7 +29,7 @@ export default function AuthButton() {
               className="rounded-full"
             />
           )}
-          <span className="text-sm font-medium">
+          <span className="text-sm font-medium text-foreground">
             {session.user.name || session.user.email}
           </span>
         </div>

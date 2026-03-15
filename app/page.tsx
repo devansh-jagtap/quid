@@ -10,14 +10,14 @@ import {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-20 text-center">
-        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+      <section className="px-4 py-20 text-center">
+        <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
           Create Professional Invoices
-          <span className="block text-blue-600 mt-2">In Minutes</span>
+          <span className="block text-primary mt-2">In Minutes</span>
         </h1>
-        <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+        <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
           Streamline your billing process with Quid Invoice Generator. Create,
           manage, and track invoices effortlessly.
         </p>
@@ -36,8 +36,8 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">
+      <section className="px-4 py-16">
+        <h2 className="text-3xl font-bold text-center text-foreground mb-12">
           Why Choose Quid?
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
@@ -49,7 +49,7 @@ export default function Home() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 No complicated setup. Just sign in with Google and start
                 creating professional invoices immediately.
               </p>
@@ -64,7 +64,7 @@ export default function Home() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 Your invoices will look polished and professional, making a
                 great impression on your clients.
               </p>
@@ -79,7 +79,7 @@ export default function Home() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 Keep track of all your invoices, view history, and download PDFs
                 anytime you need them.
               </p>
@@ -89,8 +89,8 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="container mx-auto px-4 py-16 text-center">
-        <Card className="max-w-2xl mx-auto bg-blue-50 border-blue-200">
+      <section className="px-4 py-16 text-center">
+        <Card className="max-w-2xl mx-auto bg-card border-border">
           <CardHeader>
             <CardTitle className="text-3xl">Ready to Get Started?</CardTitle>
             <CardDescription className="text-lg">

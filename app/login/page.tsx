@@ -12,7 +12,7 @@ import {
 
 export default function LoginPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-linear-to-br from-blue-50 to-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-background">
       <Card className="w-full max-w-md mx-4">
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-3xl font-bold">Welcome Back</CardTitle>
@@ -49,16 +49,16 @@ export default function LoginPage() {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
+              <span className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
+              <span className="bg-card px-2 text-muted-foreground">
                 Secure authentication
               </span>
             </div>
           </div>
 
-          <p className="text-center text-sm text-gray-600">
+          <p className="text-center text-sm text-muted-foreground">
             By continuing, you agree to our Terms of Service and Privacy Policy
           </p>
         </CardContent>

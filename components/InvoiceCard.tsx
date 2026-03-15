@@ -35,13 +35,13 @@ export default function InvoiceCard({
   const date = new Date(createdAt);
 
   return (
-    <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
+    <Card className="hover:shadow-lg transition-shadow cursor-pointer group bg-card border-border">
       <CardHeader>
         <div className="flex justify-between items-start mb-2">
-          <CardTitle className="text-xl group-hover:text-blue-600 transition-colors">
+          <CardTitle className="text-xl group-hover:text-primary transition-colors text-foreground">
             {clientName}
           </CardTitle>
-          <span className="text-2xl font-bold text-blue-600">
+          <span className="text-2xl font-bold text-primary">
             ${total.toFixed(2)}
           </span>
         </div>
@@ -55,11 +55,11 @@ export default function InvoiceCard({
       </CardHeader>
       <CardContent>
         <div className="space-y-2 mb-4">
-          <p className="text-sm text-gray-600">Items: {items.length}</p>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">Items: {items.length}</p>
+          <p className="text-sm text-muted-foreground">
             Subtotal: ${subtotal.toFixed(2)}
           </p>
-          <p className="text-xs text-gray-500">ID: {id.slice(0, 8)}</p>
+          <p className="text-xs text-muted-foreground">ID: {id.slice(0, 8)}</p>
         </div>
         <Link href={`/invoice/${id}`}>
           <Button className="w-full" variant="outline">
