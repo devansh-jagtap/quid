@@ -117,17 +117,48 @@ export default function InvoiceForm({
     }
   };
 
+  // Light-mode CSS variable values to override on the element during PDF capture
+  // This avoids touching the global dark class and prevents any flash
+  const lightModeVars: Record<string, string> = {
+    "--background": "oklch(1.0000 0 0)",
+    "--foreground": "oklch(0.2686 0 0)",
+    "--card": "oklch(1.0000 0 0)",
+    "--card-foreground": "oklch(0.2686 0 0)",
+    "--popover": "oklch(1.0000 0 0)",
+    "--popover-foreground": "oklch(0.2686 0 0)",
+    "--primary": "oklch(0.7686 0.1647 70.0804)",
+    "--primary-foreground": "oklch(0 0 0)",
+    "--secondary": "oklch(0.9670 0.0029 264.5419)",
+    "--secondary-foreground": "oklch(0.4461 0.0263 256.8018)",
+    "--muted": "oklch(0.9846 0.0017 247.8389)",
+    "--muted-foreground": "oklch(0.5510 0.0234 264.3637)",
+    "--accent": "oklch(0.9869 0.0214 95.2774)",
+    "--accent-foreground": "oklch(0.4732 0.1247 46.2007)",
+    "--destructive": "oklch(0.6368 0.2078 25.3313)",
+    "--destructive-foreground": "oklch(1.0000 0 0)",
+    "--border": "oklch(0.9276 0.0058 264.5313)",
+    "--input": "oklch(0.9276 0.0058 264.5313)",
+    "--ring": "oklch(0.7686 0.1647 70.0804)",
+  };
+
   const downloadPDF = async () => {
     const previewContainer = document.getElementById("preview-scroll-container");
     const element = document.getElementById("invoice-preview-root");
     if (!element || !previewContainer) return;
 
-    // 1. Temporarily switch to light mode for PDF
-    const htmlEl = document.documentElement;
-    const wasDark = htmlEl.classList.contains("dark");
-    if (wasDark) htmlEl.classList.remove("dark");
+    // 1. Override CSS variables on the element to force light-mode colors (no theme toggle!)
+    const savedVars: Record<string, string> = {};
+    for (const [key, val] of Object.entries(lightModeVars)) {
+      savedVars[key] = element.style.getPropertyValue(key);
+      element.style.setProperty(key, val);
+    }
+    // Force white background and dark text on the root element itself
+    const savedBg = element.style.backgroundColor;
+    const savedColor = element.style.color;
+    element.style.backgroundColor = "white";
+    element.style.color = "black";
 
-    // 2. Temporarily remove scroll container constraints so the full invoice is rendered
+    // 2. Temporarily remove scroll container constraints
     const savedOverflow = previewContainer.style.overflow;
     const savedMaxHeight = previewContainer.style.maxHeight;
     const savedHeight = previewContainer.style.height;
@@ -135,7 +166,7 @@ export default function InvoiceForm({
     previewContainer.style.maxHeight = "none";
     previewContainer.style.height = "auto";
 
-    // 3. Give browser a frame to re-layout before capturing
+    // 3. Give browser a frame to re-layout
     await new Promise((r) => requestAnimationFrame(r));
 
     try {
@@ -165,7 +196,15 @@ export default function InvoiceForm({
       previewContainer.style.overflow = savedOverflow;
       previewContainer.style.maxHeight = savedMaxHeight;
       previewContainer.style.height = savedHeight;
-      if (wasDark) htmlEl.classList.add("dark");
+      element.style.backgroundColor = savedBg;
+      element.style.color = savedColor;
+      for (const [key] of Object.entries(lightModeVars)) {
+        if (savedVars[key]) {
+          element.style.setProperty(key, savedVars[key]);
+        } else {
+          element.style.removeProperty(key);
+        }
+      }
     }
   };
 

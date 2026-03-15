@@ -19,7 +19,7 @@ export default function SimpleTemplate({
                 </div>
                 <div className="text-right text-sm">
                     <p className="font-semibold uppercase text-gray-500 dark:text-muted-foreground mb-1">Date</p>
-                    <p>{new Date().toLocaleDateString()}</p>
+                    <p>{new Date().toLocaleDateString('en-US')}</p>
                 </div>
             </div>
 
