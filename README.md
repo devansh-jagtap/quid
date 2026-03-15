@@ -1,24 +1,8 @@
-# Quid Invoice Generator 🧾
+# Quid Invoice Generator 
 
 A modern, full-stack invoice management application built with Next.js 14, Prisma, and NextAuth. Create, manage, and track professional invoices with ease.
 
-![Next.js](https://img.shields.io/badge/Next.js-14-black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
-![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748)
-![NextAuth](https://img.shields.io/badge/NextAuth-Authentication-purple)
-
-## ✨ Features
-
-- 🔐 **Google OAuth Authentication** - Secure sign-in with NextAuth.js
-- 📊 **Dashboard** - Overview of all invoices with statistics
-- ✏️ **Create Invoices** - Intuitive form to generate professional invoices
-- 👁️ **Invoice Details** - Dynamic routes for viewing individual invoices
-- 📥 **PDF Export** - Download invoices as PDF documents
-- 🎨 **Modern UI** - Built with shadcn/ui and Tailwind CSS
-- 🗄️ **Database** - PostgreSQL with Prisma ORM
-- 📱 **Responsive Design** - Works on all devices
-
-## 🚀 Tech Stack
+##  Tech Stack
 
 ### Frontend
 - **Next.js 14** - React framework with App Router
@@ -37,7 +21,7 @@ A modern, full-stack invoice management application built with Next.js 14, Prism
 - **html-to-image** - Invoice preview to image conversion
 - **Lucide React** - Icon library
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 quid/
@@ -85,7 +69,7 @@ quid/
 └── utils/                        # Helper functions
 ```
 
-## 🛠️ Setup Instructions
+##  Setup Instructions
 
 ### Prerequisites
 - Node.js 18+ installed
@@ -138,7 +122,7 @@ npm run dev
 
 Visit [http://localhost:3000](http://localhost:3000)
 
-## 📖 Usage Guide
+##  Usage Guide
 
 ### 1. Authentication
 - Navigate to the homepage
@@ -163,158 +147,7 @@ Each invoice has its own unique URL:
 - `/invoice/[id]` - View specific invoice
 - Example: `/invoice/abc123def456`
 
-## 🔌 API Routes
-
-### Authentication
-```
-GET/POST /api/auth/[...nextauth]
-```
-Handles NextAuth.js authentication flow
-
-### Invoices
-```
-GET /api/invoices
-```
-Returns all invoices for the authenticated user
-
-```
-POST /api/invoices
-```
-Creates a new invoice
-
-**Request Body:**
-```json
-{
-  "clientName": "John Doe",
-  "items": [
-    {
-      "name": "Web Development",
-      "quantity": 10,
-      "price": 100
-    }
-  ],
-  "subtotal": 1000,
-  "total": 1000
-}
-```
-
-## 🗄️ Database Schema
-
-```prisma
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  invoices      Invoice[]
-  accounts      Account[]
-  sessions      Session[]
-}
-
-model Invoice {
-  id         String        @id @default(cuid())
-  clientName String
-  subtotal   Float
-  total      Float
-  userId     String
-  user       User          @relation(fields: [userId], references: [id])
-  items      InvoiceItem[]
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
-}
-
-model InvoiceItem {
-  id        String  @id @default(cuid())
-  name      String
-  quantity  Int
-  price     Float
-  invoiceId String
-  invoice   Invoice @relation(fields: [invoiceId], references: [id])
-}
-```
-
-## 🎨 UI Components (shadcn/ui)
-
-The project uses shadcn/ui for consistent, accessible components:
-
-- **Button** - Primary actions, links
-- **Card** - Content containers, invoice cards
-- **Input** - Form fields
-- **Label** - Form labels
-
-Add more components as needed:
-```bash
-npx shadcn@latest add [component-name]
-```
-
-## 🔐 Authentication Flow
-
-1. User clicks "Sign In"
-2. Redirected to `/login`
-3. Google OAuth popup appears
-4. User authorizes the application
-5. NextAuth creates/updates user in database
-6. Session is established
-7. User is redirected to `/dashboard`
-
-### Protected Routes
-The following routes require authentication:
-- `/dashboard`
-- `/create-invoice`
-- `/invoice/[id]`
-
-Unauthenticated users are redirected to `/login`
-
-## 🧪 Development Notes
-
-### Adding a New Feature Component
-1. Create component in `features/[feature]/components/`
-2. Export types from `features/[feature]/types.ts`
-3. Add actions in `features/[feature]/actions/`
-
-### Adding a Global Component
-1. Create component in `components/`
-2. Import in pages as needed
-3. Use shadcn/ui primitives for consistency
-
-### Styling Guidelines
-- Use Tailwind utility classes
-- Follow shadcn/ui design patterns
-- Maintain responsive design (mobile-first)
-- Use semantic HTML
-
-## 📝 Scripts
-
-```bash
-# Development
-npm run dev          # Start dev server
-
-# Build
-npm run build        # Build for production
-npm start            # Start production server
-
-# Database
-npx prisma studio    # Open Prisma Studio
-npx prisma migrate dev   # Run migrations
-npx prisma generate  # Generate Prisma Client
-
-# Linting
-npm run lint         # Run ESLint
-```
-
-## 🚧 Roadmap
-
-- [ ] Email invoice to clients
-- [ ] Invoice templates
-- [ ] Payment status tracking
-- [ ] Multi-currency support
-- [ ] Dark mode
-- [ ] Invoice analytics
-- [ ] Recurring invoices
-- [ ] Tax calculations
-
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -322,14 +155,8 @@ npm run lint         # Run ESLint
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 License
+##  License
 
 MIT License - feel free to use this project for personal or commercial purposes.
-
-## 👨‍💻 Author
-
-Built with ❤️ using Next.js and modern web technologies.
-
----
 
 **Note:** This is a learning project demonstrating Next.js App Router, Prisma, NextAuth, and modern React patterns.
