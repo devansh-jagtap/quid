@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import DeleteInvoiceButton from "@/features/invoices/components/DeleteInvoiceButton";
 
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
@@ -137,11 +138,14 @@ export default async function Dashboard() {
                       Subtotal: ${invoice.subtotal.toFixed(2)}
                     </p>
                   </div>
-                  <Link href={`/invoice/${invoice.id}`}>
-                    <Button className="w-full" variant="outline">
-                      View Details →
-                    </Button>
-                  </Link>
+                  <div className="flex gap-2">
+                    <Link href={`/invoice/${invoice.id}`} className="flex-1">
+                      <Button className="w-full" variant="outline">
+                        View Details →
+                      </Button>
+                    </Link>
+                    <DeleteInvoiceButton invoiceId={invoice.id} />
+                  </div>
                 </CardContent>
               </Card>
             ))}

@@ -37,7 +37,7 @@ export default function InvoiceForm({
       {
         id: crypto.randomUUID(),
         name: "",
-        quantity: 1,
+        quantity: 0,
         price: 0,
       },
     ],
@@ -46,7 +46,7 @@ export default function InvoiceForm({
   const [selectedTemplate, setSelectedTemplate] = useState<keyof typeof templates>("simple");
 
   const addItem = () => {
-    setItems([...items, { id: crypto.randomUUID(), name: "", quantity: 1, price: 0 }]);
+    setItems([...items, { id: crypto.randomUUID(), name: "", quantity: 0, price: 0 }]);
   };
 
   const removeItem = (index: number) => {
@@ -170,7 +170,7 @@ export default function InvoiceForm({
     await new Promise((r) => requestAnimationFrame(r));
 
     try {
-      const imgData = await toPng(element, { 
+      const imgData = await toPng(element, {
         pixelRatio: 2,
         backgroundColor: "#ffffff",
       });
@@ -277,7 +277,7 @@ export default function InvoiceForm({
                       />
                       <input
                         type="number"
-                        value={item.quantity}
+                        value={item.quantity || ""}
                         onChange={(e) =>
                           updateItem(index, "quantity", Number(e.target.value))
                         }
@@ -286,7 +286,7 @@ export default function InvoiceForm({
                       />
                       <input
                         type="number"
-                        value={item.price}
+                        value={item.price || ""}
                         onChange={(e) =>
                           updateItem(index, "price", Number(e.target.value))
                         }
@@ -329,20 +329,20 @@ export default function InvoiceForm({
               {isEditing && (
                 <button
                   onClick={() => router.back()}
-                  className="px-6 py-2 border border-border text-foreground hover:bg-muted rounded-lg transition-colors font-medium"
+                  className="px-6 py-2 border border-border text-foreground hover:bg-muted rounded-3xl transition-colors font-medium"
                 >
                   Cancel
                 </button>
               )}
               <button
                 onClick={downloadPDF}
-                className="px-6 py-2 border border-border text-foreground hover:bg-muted rounded-lg transition-colors font-medium"
+                className="px-6 py-2 border border-border text-foreground hover:bg-muted rounded-3xl transition-colors font-medium"
               >
                 Download PDF
               </button>
               <button
                 onClick={handleSaveInvoice}
-                className="px-6 py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg transition-colors font-medium"
+                className="px-6 py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-3xl transition-colors font-medium"
               >
                 {isEditing ? "Update Invoice" : "Save Invoice"}
               </button>
