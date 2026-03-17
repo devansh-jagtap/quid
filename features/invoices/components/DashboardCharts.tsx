@@ -87,7 +87,7 @@ export default function DashboardCharts({
       <Card className="bg-card border-border">
         <CardHeader>
           <CardTitle>Invoice Trend</CardTitle>
-          <CardDescription>Last {trendData.length || 0} invoices by total</CardDescription>
+          <CardDescription>Last {trendData.length} invoices by total</CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer config={trendChartConfig} className="h-64 w-full">

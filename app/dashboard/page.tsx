@@ -59,14 +59,20 @@ export default async function Dashboard() {
   }));
 
   const recentTrendData = invoices.slice(0, 7).reverse();
-  const maxTrendTotal = Math.max(...recentTrendData.map((invoice) => invoice.total), 1);
-  const trendData = recentTrendData.map((invoice) => ({
-    date: new Date(invoice.createdAt).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    }),
-    total: invoice.total,
-  }));
+  const trendSummary = recentTrendData.reduce(
+    (acc, invoice) => {
+      acc.maxTrendTotal = Math.max(acc.maxTrendTotal, invoice.total);
+      acc.trendData.push({
+        date: new Date(invoice.createdAt).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        }),
+        total: invoice.total,
+      });
+      return acc;
+    },
+    { trendData: [] as { date: string; total: number }[], maxTrendTotal: 0 },
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -118,8 +124,8 @@ export default async function Dashboard() {
 
         <DashboardCharts
           monthlyRevenueData={monthlyRevenueData}
-          trendData={trendData}
-          maxTrendTotal={maxTrendTotal}
+          trendData={trendSummary.trendData}
+          maxTrendTotal={trendSummary.maxTrendTotal}
         />
 
         {/* Create Invoice CTA */}
