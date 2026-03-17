@@ -13,6 +13,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
@@ -74,6 +76,7 @@ export default function DashboardCharts({
                 cursor={{ fill: "var(--muted)" }}
                 content={<ChartTooltipContent />}
               />
+              <ChartLegend content={<ChartLegendContent />} />
               <Bar
                 dataKey="total"
                 fill="var(--color-total)"
@@ -104,6 +107,7 @@ export default function DashboardCharts({
                 cursor={{ stroke: "var(--border)", strokeWidth: 1 }}
                 content={<ChartTooltipContent />}
               />
+              <ChartLegend content={<ChartLegendContent />} />
               <Line
                 dataKey="total"
                 type="monotone"
