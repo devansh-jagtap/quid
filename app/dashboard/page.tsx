@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import DeleteInvoiceButton from "@/features/invoices/components/DeleteInvoiceButton";
+import DashboardCharts from "@/features/invoices/components/DashboardCharts";
 
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
@@ -33,6 +34,39 @@ export default async function Dashboard() {
     include: { items: true },
     orderBy: { createdAt: "desc" },
   });
+
+  const monthFormatter = new Intl.DateTimeFormat("en-US", { month: "short" });
+  const lastSixMonths = Array.from({ length: 6 }, (_, index) => {
+    const date = new Date();
+    date.setDate(1);
+    date.setMonth(date.getMonth() - (5 - index));
+    return {
+      key: `${date.getFullYear()}-${date.getMonth()}`,
+      label: monthFormatter.format(date),
+    };
+  });
+
+  const revenueByMonth = invoices.reduce<Record<string, number>>((acc, invoice) => {
+    const invoiceDate = new Date(invoice.createdAt);
+    const key = `${invoiceDate.getFullYear()}-${invoiceDate.getMonth()}`;
+    acc[key] = (acc[key] || 0) + invoice.total;
+    return acc;
+  }, {});
+
+  const monthlyRevenueData = lastSixMonths.map((month) => ({
+    month: month.label,
+    total: revenueByMonth[month.key] || 0,
+  }));
+
+  const recentTrendData = invoices.slice(0, 7).reverse();
+  const maxTrendTotal = Math.max(...recentTrendData.map((invoice) => invoice.total), 1);
+  const trendData = recentTrendData.map((invoice) => ({
+    date: new Date(invoice.createdAt).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    }),
+    total: invoice.total,
+  }));
 
   return (
     <div className="min-h-screen bg-background">
@@ -81,6 +115,12 @@ export default async function Dashboard() {
             </CardHeader>
           </Card>
         </div>
+
+        <DashboardCharts
+          monthlyRevenueData={monthlyRevenueData}
+          trendData={trendData}
+          maxTrendTotal={maxTrendTotal}
+        />
 
         {/* Create Invoice CTA */}
         <div className="mb-6 flex justify-between items-center">
