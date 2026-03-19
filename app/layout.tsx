@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import PublicNavbar from "@/components/PublicNavbar";
-import Sidebar from "@/components/Sidebar";
 import { Providers } from "@/components/ThemeProvider";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,14 +33,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
         <Providers>
-          <PublicNavbar />
-          <div className="flex min-h-[calc(100vh-64px)]">
-            {/* Sidebar - only shows when authenticated */}
-            <Sidebar />
-
-            {/* Main Content */}
-            <main className="flex-1 w-full">{children}</main>
-          </div>
+          <TooltipProvider>
+            <SidebarProvider>
+              <AppSidebar />
+              <div className="flex flex-col w-full">
+                <PublicNavbar />
+                <main className="flex-1 w-full">{children}</main>
+              </div>
+            </SidebarProvider>
+          </TooltipProvider>
         </Providers>
       </body>
     </html>
