@@ -6,6 +6,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, Download } from "lucide-react";
+import InvoiceStatusUpdate from "@/features/invoices/components/InvoiceStatusUpdate";
+import InvoiceStatusBadge from "@/features/invoices/components/InvoiceStatusBadge";
+
+type InvoiceStatus =
+  | "DRAFT"
+  | "SENT"
+  | "VIEWED"
+  | "PAID"
+  | "OVERDUE"
+  | "CANCELLED";
 
 interface InvoiceDetailPageProps {
   params: Promise<{
@@ -85,7 +95,7 @@ export default async function InvoiceDetailPage({
 
         <Card className="bg-card border-border">
           <CardHeader className="bg-muted/30">
-            <div className="flex justify-between items-start">
+            <div className="flex justify-between items-start mb-4">
               <div>
                 <CardTitle className="text-3xl mb-2 text-foreground">
                   Invoice #{invoice.id.slice(-6).toUpperCase()}
@@ -98,9 +108,39 @@ export default async function InvoiceDetailPage({
                 </p>
               </div>
             </div>
+            <div className="border-t border-border pt-4">
+              <InvoiceStatusUpdate
+                invoiceId={invoice.id}
+                currentStatus={invoice.status as InvoiceStatus}
+              />
+            </div>
           </CardHeader>
 
           <CardContent className="p-6">
+            {/* Status Summary */}
+            <div className="mb-8 p-4 bg-muted/30 rounded-lg border border-border">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Current Status
+                  </p>
+                  <InvoiceStatusBadge
+                    status={invoice.status as InvoiceStatus}
+                  />
+                </div>
+                <div className="text-right">
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Last Updated
+                  </p>
+                  <p className="font-semibold text-foreground">
+                    {new Date(
+                      invoice.updatedAt || invoice.createdAt,
+                    ).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Client Information */}
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-foreground mb-2">

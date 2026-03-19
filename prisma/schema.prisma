@@ -55,13 +55,24 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  VIEWED
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
 model Invoice {
   id          String   @id @default(cuid())
   clientName  String
   clientEmail String   @default("")
   subtotal    Float
   total       Float
+  status      InvoiceStatus @default(DRAFT)
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   userId String
   user   User @relation(fields: [userId], references: [id])
