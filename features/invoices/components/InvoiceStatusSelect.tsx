@@ -10,7 +10,13 @@ import {
 } from "@/components/ui/select";
 import InvoiceStatusBadge from "./InvoiceStatusBadge";
 
-type InvoiceStatus = "DRAFT" | "SENT" | "VIEWED" | "PAID" | "OVERDUE" | "CANCELLED";
+type InvoiceStatus =
+  | "DRAFT"
+  | "SENT"
+  | "VIEWED"
+  | "PAID"
+  | "OVERDUE"
+  | "CANCELLED";
 
 interface InvoiceStatusSelectProps {
   invoiceId: string;
@@ -62,16 +68,20 @@ export default function InvoiceStatusSelect({
   return (
     <div className="w-[130px]">
       <Select
-        defaultValue={currentStatus}
+        value={currentStatus}
         onValueChange={(value) => handleStatusChange(value as InvoiceStatus)}
         disabled={isUpdating}
       >
         <SelectTrigger className="border-none p-0 h-auto bg-transparent hover:bg-transparent shadow-none focus:ring-0">
-           <InvoiceStatusBadge status={currentStatus} />
+          <InvoiceStatusBadge status={currentStatus} />
         </SelectTrigger>
         <SelectContent align="start">
           {statusOptions.map((option) => (
-            <SelectItem key={option.value} value={option.value} className="text-xs">
+            <SelectItem
+              key={option.value}
+              value={option.value}
+              className="text-xs"
+            >
               {option.label}
             </SelectItem>
           ))}
