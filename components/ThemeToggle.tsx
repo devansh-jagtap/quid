@@ -5,9 +5,11 @@ import { useState, useSyncExternalStore } from "react";
 import { Moon, Sun, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+const emptySubscribe = () => () => {};
+
 export function ThemeToggle() {
   const mounted = useSyncExternalStore(
-    () => () => {},
+    emptySubscribe,
     () => true,
     () => false
   );
