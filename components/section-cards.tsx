@@ -18,6 +18,21 @@ interface SectionCardsProps {
   overdueAmount: number
 }
 
+function TrendBadge({ value }: { value: number }) {
+  const isPositive = value >= 0
+  return (
+    <Badge variant="outline" className="gap-1">
+      {isPositive ? (
+        <IconTrendingUp className="size-3" />
+      ) : (
+        <IconTrendingDown className="size-3" />
+      )}
+      {isPositive ? "+" : ""}
+      {value.toFixed(1)}%
+    </Badge>
+  )
+}
+
 export function SectionCards({
   totalRevenue,
   paidAmount,
@@ -40,20 +55,6 @@ export function SectionCards({
   const pendingTrend = calculateTrend(pendingAmount, prevPending)
   const overdueTrend = calculateTrend(overdueAmount, prevOverdue)
 
-  const TrendBadge = ({ value, label }: { value: number; label: string }) => {
-    const isPositive = value >= 0
-    return (
-      <Badge variant="outline" className="gap-1">
-        {isPositive ? (
-          <IconTrendingUp className="size-3" />
-        ) : (
-          <IconTrendingDown className="size-3" />
-        )}
-        {isPositive ? "+" : ""}{value.toFixed(1)}%
-      </Badge>
-    )
-  }
-
   return (
     <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card">
       <Card className="@container/card">
@@ -63,7 +64,7 @@ export function SectionCards({
             ${totalRevenue.toFixed(2)}
           </CardTitle>
           <div className="mt-2">
-            <TrendBadge value={revenueTrend} label="Revenue" />
+            <TrendBadge value={revenueTrend} />
           </div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
@@ -88,7 +89,7 @@ export function SectionCards({
             ${paidAmount.toFixed(2)}
           </CardTitle>
           <div className="mt-2">
-            <TrendBadge value={paidTrend} label="Paid" />
+            <TrendBadge value={paidTrend} />
           </div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
@@ -109,7 +110,7 @@ export function SectionCards({
             ${pendingAmount.toFixed(2)}
           </CardTitle>
           <div className="mt-2">
-            <TrendBadge value={pendingTrend} label="Pending" />
+            <TrendBadge value={pendingTrend} />
           </div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
@@ -130,7 +131,7 @@ export function SectionCards({
             ${overdueAmount.toFixed(2)}
           </CardTitle>
           <div className="mt-2">
-            <TrendBadge value={overdueTrend} label="Overdue" />
+            <TrendBadge value={overdueTrend} />
           </div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
