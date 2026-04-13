@@ -8,7 +8,7 @@ import { toPng } from "html-to-image";
 import { InvoiceItem } from "../types";
 import { saveInvoice } from "../actions/saveInvoice";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { templates } from "../templates";
+import { TemplateId, templateOptions } from "../templates";
 
 interface InvoiceFormProps {
   initialData?: {
@@ -43,7 +43,7 @@ export default function InvoiceForm({
     ],
   );
 
-  const [selectedTemplate, setSelectedTemplate] = useState<keyof typeof templates>("simple");
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>("simple");
 
   const addItem = () => {
     setItems([...items, { id: crypto.randomUUID(), name: "", quantity: 0, price: 0 }]);
@@ -358,11 +358,14 @@ export default function InvoiceForm({
                 </h2>
                 <select
                   value={selectedTemplate}
-                  onChange={(e) => setSelectedTemplate(e.target.value as keyof typeof templates)}
+                  onChange={(e) => setSelectedTemplate(e.target.value as TemplateId)}
                   className="px-3 py-1.5 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 >
-                  <option value="simple">Simple Template</option>
-                  <option value="modern">Modern Template</option>
+                  {templateOptions.map((template) => (
+                    <option key={template.id} value={template.id}>
+                      {template.label}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div

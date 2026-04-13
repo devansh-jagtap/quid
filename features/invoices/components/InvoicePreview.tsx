@@ -1,12 +1,12 @@
 import { InvoiceItem, InvoiceData } from "../types";
-import { templates } from "../templates";
+import { templates, TemplateId } from "../templates";
 
 type InvoicePreviewProps = {
   items: InvoiceItem[];
   subtotal: number;
   clientName: string;
   clientEmail: string;
-  templateId?: keyof typeof templates;
+  templateId?: TemplateId;
 };
 
 export default function InvoicePreview({
