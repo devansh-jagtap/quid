@@ -12,9 +12,12 @@ export const templates = {
 
 export type TemplateId = keyof typeof templates
 
-export const templateOptions: { id: TemplateId; label: string }[] = [
-  { id: "simple", label: "Simple Template" },
-  { id: "modern", label: "Modern Template" },
-  { id: "elegant", label: "Elegant Template" },
-  { id: "vibrant", label: "Vibrant Template" },
-]
+const createTemplateLabel = (id: TemplateId) =>
+  `${id.charAt(0).toUpperCase()}${id.slice(1)} Template`
+
+export const templateOptions: { id: TemplateId; label: string }[] = (
+  Object.keys(templates) as TemplateId[]
+).map((id) => ({
+  id,
+  label: createTemplateLabel(id),
+}))
