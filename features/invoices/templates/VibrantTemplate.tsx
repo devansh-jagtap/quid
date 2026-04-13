@@ -14,7 +14,7 @@ export default function VibrantTemplate({
           <div>
             <h1 className="text-3xl font-black tracking-tight">INVOICE</h1>
             <p className="text-xs uppercase tracking-[0.2em] opacity-90 mt-1">
-              crafted by quid
+              crafted by Quid
             </p>
           </div>
           <div className="text-right text-sm">
