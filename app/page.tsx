@@ -327,8 +327,8 @@ export default function Home() {
               who value craft.
             </h2>
             <p className="text-muted-foreground leading-relaxed max-w-md">
-              We built Quid because financial tools shouldn't look like they were designed in 2005.
-              Your workflow deserves software that's modern, fast, and beautiful.
+              We built Quid because financial tools shouldn&apos;t look like they were designed in 2005.
+              Your workflow deserves software that&apos;s modern, fast, and beautiful.
             </p>
           </motion.div>
 
