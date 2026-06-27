@@ -8,14 +8,7 @@ import Link from "next/link";
 import { ArrowLeft, Download } from "lucide-react";
 import InvoiceStatusUpdate from "@/features/invoices/components/InvoiceStatusUpdate";
 import InvoiceStatusBadge from "@/features/invoices/components/InvoiceStatusBadge";
-
-type InvoiceStatus =
-  | "DRAFT"
-  | "SENT"
-  | "VIEWED"
-  | "PAID"
-  | "OVERDUE"
-  | "CANCELLED";
+import type { InvoiceWithItems } from "@/features/invoices/types";
 
 interface InvoiceDetailPageProps {
   params: Promise<{
@@ -41,7 +34,7 @@ export default async function InvoiceDetailPage({
     redirect("/login");
   }
 
-  const invoice = await prisma.invoice.findUnique({
+  const invoice = (await prisma.invoice.findUnique({
     where: {
       id: id,
       userId: user.id,
@@ -49,7 +42,7 @@ export default async function InvoiceDetailPage({
     include: {
       items: true,
     },
-  });
+  })) as InvoiceWithItems | null;
 
   if (!invoice) {
     return (
@@ -111,7 +104,7 @@ export default async function InvoiceDetailPage({
             <div className="border-t border-border pt-4">
               <InvoiceStatusUpdate
                 invoiceId={invoice.id}
-                currentStatus={invoice.status as InvoiceStatus}
+                currentStatus={invoice.status}
               />
             </div>
           </CardHeader>
@@ -125,7 +118,7 @@ export default async function InvoiceDetailPage({
                     Current Status
                   </p>
                   <InvoiceStatusBadge
-                    status={invoice.status as InvoiceStatus}
+                    status={invoice.status}
                   />
                 </div>
                 <div className="text-right">

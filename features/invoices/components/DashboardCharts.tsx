@@ -4,8 +4,6 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Line,
-  LineChart,
   XAxis,
   YAxis,
   Area,

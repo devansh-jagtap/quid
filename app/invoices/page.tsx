@@ -16,14 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { InvoiceDataTable } from "@/features/invoices/components/InvoiceDataTable";
 import { Plus } from "lucide-react";
-
-type InvoiceStatus =
-  | "DRAFT"
-  | "SENT"
-  | "VIEWED"
-  | "PAID"
-  | "OVERDUE"
-  | "CANCELLED";
+import type { InvoiceWithItems } from "@/features/invoices/types";
 
 export default async function InvoicesPage() {
   const session = await getServerSession(authOptions);
@@ -40,16 +33,16 @@ export default async function InvoicesPage() {
     redirect("/login");
   }
 
-  const invoices = await prisma.invoice.findMany({
+  const invoices = (await prisma.invoice.findMany({
     where: { userId: user.id },
     include: { items: true },
     orderBy: { createdAt: "desc" },
-  });
+  })) as InvoiceWithItems[];
 
   const invoiceTableData = invoices.map((invoice) => ({
     id: invoice.id,
     clientName: invoice.clientName,
-    status: invoice.status as InvoiceStatus,
+    status: invoice.status,
     total: invoice.total,
     subtotal: invoice.subtotal,
     itemCount: invoice.items.length,

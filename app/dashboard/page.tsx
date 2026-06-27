@@ -7,10 +7,8 @@ import Link from "next/link";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -18,14 +16,7 @@ import { SectionCards } from "@/components/section-cards";
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
 import { InvoiceDataTable } from "@/features/invoices/components/InvoiceDataTable";
 import { Plus, ArrowRight } from "lucide-react";
-
-type InvoiceStatus =
-  | "DRAFT"
-  | "SENT"
-  | "VIEWED"
-  | "PAID"
-  | "OVERDUE"
-  | "CANCELLED";
+import type { InvoiceWithItems } from "@/features/invoices/types";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -42,11 +33,11 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  const invoices = await prisma.invoice.findMany({
+  const invoices = (await prisma.invoice.findMany({
     where: { userId: user.id },
     include: { items: true },
     orderBy: { createdAt: "desc" },
-  });
+  })) as InvoiceWithItems[];
 
   // Build chart data: aggregate daily paid vs pending amounts for the last 90 days
   const dailyMap = new Map<string, { paid: number; pending: number }>();
@@ -97,7 +88,7 @@ export default async function DashboardPage() {
   const recentInvoices = invoices.slice(0, 5).map((invoice) => ({
     id: invoice.id,
     clientName: invoice.clientName,
-    status: invoice.status as InvoiceStatus,
+    status: invoice.status,
     total: invoice.total,
     subtotal: invoice.subtotal,
     itemCount: invoice.items.length,

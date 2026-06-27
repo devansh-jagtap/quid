@@ -1,13 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import {
   IconDashboard,
   IconFileText,
   IconSettings,
-  IconLogout,
   IconInnerShadowTop,
   IconReceipt,
 } from "@tabler/icons-react";
@@ -57,7 +56,6 @@ export function AppSidebar({
 }: React.ComponentPropsWithoutRef<typeof Sidebar>) {
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  const router = useRouter();
 
   // Hide sidebar on public pages
   const isPublicPage = pathname === "/" || pathname === "/login";

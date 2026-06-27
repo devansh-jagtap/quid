@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import type { InvoiceWithItems } from "@/features/invoices/types";
 
 interface EditInvoicePageProps {
   params: Promise<{
@@ -38,7 +39,7 @@ export default async function EditInvoicePage({
     redirect("/login");
   }
 
-  const invoice = await prisma.invoice.findUnique({
+  const invoice = (await prisma.invoice.findUnique({
     where: {
       id: id,
       userId: user.id,
@@ -46,7 +47,7 @@ export default async function EditInvoicePage({
     include: {
       items: true,
     },
-  });
+  })) as InvoiceWithItems | null;
 
   if (!invoice) {
     redirect("/dashboard");
