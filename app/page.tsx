@@ -349,23 +349,67 @@ export default function Home() {
       </section>
 
       {/* ───────── FOOTER ───────── */}
-      <footer className="py-12 px-6 border-t border-border/30 bg-muted/20">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="flex items-center gap-2">
-            <Zap className="h-4 w-4 text-primary" />
-            <span className="text-sm font-bold tracking-tight">Quid</span>
+      <footer className="border-t border-border/40 bg-muted/25 px-6">
+        <div className="mx-auto max-w-6xl py-14">
+          <div className="grid gap-10 md:grid-cols-[1.4fr_0.8fr_0.8fr_1fr]">
+            <div className="max-w-sm">
+              <Link href="/" className="mb-5 inline-flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
+                  <Zap className="h-4 w-4" />
+                </span>
+                <span className="text-lg font-bold tracking-tight">Quid</span>
+              </Link>
+              <p className="text-sm leading-6 text-muted-foreground">
+                A focused invoicing workspace for creating, tracking, and managing client payments.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3 text-xs font-medium text-muted-foreground">
+                <span className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background px-3 py-1.5">
+                  <Check className="h-3 w-3 text-primary" />
+                  Secure auth
+                </span>
+                <span className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background px-3 py-1.5">
+                  <Check className="h-3 w-3 text-primary" />
+                  PDF ready
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="mb-4 text-sm font-semibold text-foreground">Explore</h3>
+              <div className="flex flex-col gap-3 text-sm text-muted-foreground">
+                <Link href="#features" className="hover:text-foreground transition-colors">Features</Link>
+                <Link href="#product" className="hover:text-foreground transition-colors">Product</Link>
+                <Link href="#about" className="hover:text-foreground transition-colors">About</Link>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="mb-4 text-sm font-semibold text-foreground">Company</h3>
+              <div className="flex flex-col gap-3 text-sm text-muted-foreground">
+                <Link href="#" className="hover:text-foreground transition-colors">Privacy</Link>
+                <Link href="#" className="hover:text-foreground transition-colors">Terms</Link>
+                <Link href="#" className="hover:text-foreground transition-colors">Contact</Link>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-border/60 bg-background p-5">
+              <h3 className="text-sm font-semibold text-foreground">Start billing cleaner</h3>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                Open your workspace and create a polished invoice in minutes.
+              </p>
+              <Link href="/login" className="mt-5 inline-flex">
+                <Button size="sm" className="rounded-lg px-4 font-semibold">
+                  Get Started
+                  <ArrowRight className="ml-1 h-3.5 w-3.5" />
+                </Button>
+              </Link>
+            </div>
           </div>
 
-          <div className="flex gap-8 text-muted-foreground text-xs font-medium">
-            <Link href="#features" className="hover:text-foreground transition-colors">Features</Link>
-            <Link href="#" className="hover:text-foreground transition-colors">Privacy</Link>
-            <Link href="#" className="hover:text-foreground transition-colors">Terms</Link>
-            <Link href="#" className="hover:text-foreground transition-colors">Contact</Link>
+          <div className="mt-12 flex flex-col gap-4 border-t border-border/40 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+            <p>© {new Date().getFullYear()} Quid. All rights reserved.</p>
+            <p>Built for fast, professional invoicing.</p>
           </div>
-
-          <p className="text-muted-foreground/50 text-xs">
-            © {new Date().getFullYear()} Quid. All rights reserved.
-          </p>
         </div>
       </footer>
     </div>
