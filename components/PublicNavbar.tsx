@@ -18,7 +18,7 @@ export default function PublicNavbar() {
 
   return (
     <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
-      <nav className="flex items-center justify-between w-full max-w-5xl px-6 py-3 rounded-full bg-card/70 dark:bg-card/50 backdrop-blur-xl border border-border/40 shadow-lg transition-all pointer-events-auto">
+      <nav className="flex items-center justify-between w-full max-w-5xl px-6 py-3 rounded-full bg-card/95 dark:bg-card/90 border border-border/40 shadow-md pointer-events-auto">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
           <Zap className="h-5 w-5 text-primary" />
@@ -56,13 +56,13 @@ export default function PublicNavbar() {
           </div>
           {session?.user ? (
             <Link href="/dashboard">
-              <Button size="sm" className="rounded-full px-5 font-semibold shadow-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-all">
+              <Button size="sm" className="rounded-full px-5 font-semibold shadow-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
                 Dashboard
               </Button>
             </Link>
           ) : (
             <Link href="/login">
-              <Button size="sm" className="rounded-full px-5 font-semibold shadow-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-all">
+              <Button size="sm" className="rounded-full px-5 font-semibold shadow-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
                 Sign In
               </Button>
             </Link>

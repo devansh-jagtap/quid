@@ -32,20 +32,20 @@ export default function Home() {
         {/* BG image */}
         <motion.div
           initial={{ scale: 1.12, opacity: 0 }}
-          animate={{ scale: 1.04, opacity: 1 }}
-          transition={{ duration: 1.6, ease: "easeOut" }}
-          className="absolute inset-0 z-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/bg.jpg')", backgroundAttachment: "fixed" }}
+          animate={{ scale: 1.03, opacity: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="absolute inset-0 z-0 bg-cover bg-center transform-gpu"
+          style={{ backgroundImage: "url('/bg.jpg')" }}
         />
 
         {/* Overlays — adapt to theme */}
-        <div className="absolute inset-0 z-[1] bg-background/50 dark:bg-background/60 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 z-[1] bg-background/55 dark:bg-background/65" />
         <div className="absolute inset-0 z-[1] bg-gradient-to-b from-transparent via-background/30 to-background" />
 
         {/* Content */}
         <div className="relative z-10 px-6 max-w-5xl w-full mx-auto flex flex-col items-center text-center pt-32 pb-20">
           <motion.div custom={0} variants={fadeUp} initial="hidden" animate="visible">
-            <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-border/60 bg-card/60 backdrop-blur-lg text-xs font-semibold text-muted-foreground tracking-wide mb-10 shadow-sm">
+            <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-border/60 bg-card/80 text-xs font-semibold text-muted-foreground tracking-wide mb-10 shadow-sm">
               <Sparkles className="h-3.5 w-3.5 text-primary" />
               Modern invoicing for modern teams
             </span>
@@ -84,7 +84,7 @@ export default function Home() {
             <Link href="/login">
               <Button
                 size="lg"
-                className="h-14 px-10 rounded-full text-base font-semibold gap-2 shadow-lg hover:shadow-xl transition-all group bg-primary text-primary-foreground hover:bg-primary/90"
+                className="h-14 px-10 rounded-full text-base font-semibold gap-2 shadow-md transition-transform transition-colors group bg-primary text-primary-foreground hover:bg-primary/90 hover:-translate-y-0.5"
               >
                 Get Started Free
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
@@ -94,7 +94,7 @@ export default function Home() {
               <Button
                 variant="outline"
                 size="lg"
-                className="h-14 px-10 rounded-full text-base font-semibold border-border/50 hover:bg-muted/60 transition-all"
+                className="h-14 px-10 rounded-full text-base font-semibold border-border/50 hover:bg-muted/60 transition-colors"
               >
                 View Dashboard
               </Button>
@@ -109,18 +109,12 @@ export default function Home() {
             { label: "Invoices sent", value: "1M+" },
             { label: "Countries", value: "120+" },
           ].map((s, i) => (
-            <motion.div
-              key={i}
-              custom={5 + i}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-            >
+            <div key={i}>
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/60 font-semibold">
                 {s.label}
               </p>
               <p className="text-sm font-serif text-foreground/80">{s.value}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </section>
@@ -128,13 +122,7 @@ export default function Home() {
       {/* ───────── FEATURES ───────── */}
       <section id="features" className="py-28 md:py-36 px-6 bg-muted/30 border-t border-border/30">
         <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-20 max-w-2xl mx-auto"
-          >
+          <div className="text-center mb-20 max-w-2xl mx-auto">
             <span className="text-primary text-xs font-bold uppercase tracking-[0.25em] mb-4 block">
               Features
             </span>
@@ -144,7 +132,7 @@ export default function Home() {
             <p className="text-muted-foreground leading-relaxed">
               A streamlined toolkit that handles the entire lifecycle of your invoicing — from creation to payment tracking.
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
@@ -191,13 +179,9 @@ export default function Home() {
                 bg: "bg-rose-500/10",
               },
             ].map((f, i) => (
-              <motion.div
+              <div
                 key={i}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                className="group relative rounded-2xl border border-border/50 bg-card p-8 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                className="group relative rounded-2xl border border-border/50 bg-card p-8 hover:shadow-md hover:-translate-y-1 transition-transform transition-shadow duration-200 transform-gpu"
               >
                 <div
                   className={`w-11 h-11 rounded-xl ${f.bg} flex items-center justify-center mb-5 ${f.color} group-hover:scale-110 transition-transform duration-300`}
@@ -206,7 +190,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-lg font-bold mb-2 tracking-tight">{f.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -214,18 +198,9 @@ export default function Home() {
 
       {/* ───────── PRODUCT SHOWCASE ───────── */}
       <section id="product" className="py-28 md:py-36 px-6 bg-background relative overflow-hidden">
-        {/* Ambient glows */}
-        <div className="absolute top-1/3 -left-32 w-80 h-80 bg-primary/8 dark:bg-primary/5 blur-[100px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-1/4 -right-32 w-80 h-80 bg-blue-500/8 dark:bg-blue-500/5 blur-[100px] rounded-full pointer-events-none" />
-
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-20 gap-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="max-w-xl"
-            >
+            <div className="max-w-xl">
               <span className="text-primary text-xs font-bold uppercase tracking-[0.25em] mb-4 block">
                 The Product
               </span>
@@ -233,26 +208,14 @@ export default function Home() {
                 See your business <br />
                 at a glance.
               </h2>
-            </motion.div>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="max-w-sm text-muted-foreground text-sm leading-relaxed"
-            >
+            </div>
+            <p className="max-w-sm text-muted-foreground text-sm leading-relaxed">
               A unified dashboard that gives you real-time visibility into revenue, outstanding payments, and client activity.
-            </motion.p>
+            </p>
           </div>
 
           {/* Dashboard Mock */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="rounded-3xl border border-border/60 bg-card shadow-xl overflow-hidden"
-          >
+          <div className="rounded-2xl border border-border/60 bg-card shadow-md overflow-hidden">
             {/* Window bar */}
             <div className="flex items-center px-5 py-3.5 border-b border-border/40 bg-muted/40">
               <div className="flex gap-1.5">
@@ -275,12 +238,8 @@ export default function Home() {
                   { label: "Paid Rate", val: "92%", trend: "+2.1%", up: true },
                   { label: "Clients", val: "148", trend: "+8.4%", up: true },
                 ].map((stat, i) => (
-                  <motion.div
+                  <div
                     key={i}
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 * i }}
                     className="rounded-2xl bg-muted/40 border border-border/30 p-5"
                   >
                     <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">
@@ -294,7 +253,7 @@ export default function Home() {
                     >
                       {stat.trend}
                     </p>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
 
@@ -307,18 +266,14 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* ───────── WHY QUID ───────── */}
       <section id="about" className="py-28 md:py-36 px-6 bg-muted/20 border-t border-border/30">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
+          <div>
             <span className="text-primary text-xs font-bold uppercase tracking-[0.25em] mb-4 block">
               Why Quid
             </span>
@@ -330,7 +285,7 @@ export default function Home() {
               We built Quid because financial tools shouldn&apos;t look like they were designed in 2005.
               Your workflow deserves software that&apos;s modern, fast, and beautiful.
             </p>
-          </motion.div>
+          </div>
 
           <div className="flex flex-col gap-8">
             {[
@@ -350,12 +305,8 @@ export default function Home() {
                 text: "Your data is yours. End-to-end encrypted and never shared with third parties.",
               },
             ].map((item, i) => (
-              <motion.div
+              <div
                 key={i}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
                 className="group border-t border-border/50 pt-7"
               >
                 <div className="flex justify-between items-start mb-3">
@@ -365,7 +316,7 @@ export default function Home() {
                   <span className="text-xs font-mono text-muted-foreground/40">{item.num}</span>
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">{item.text}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -373,13 +324,7 @@ export default function Home() {
 
       {/* ───────── CTA ───────── */}
       <section className="py-28 md:py-40 px-6 bg-background flex flex-col items-center text-center border-t border-border/30">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="max-w-3xl"
-        >
+        <div className="max-w-3xl">
           <h2 className="font-serif text-4xl md:text-6xl lg:text-7xl tracking-tight mb-6 leading-tight">
             Ready to transform <br />
             your billing?
@@ -390,7 +335,7 @@ export default function Home() {
           <Link href="/login">
             <Button
               size="lg"
-              className="h-16 px-14 rounded-full text-base font-semibold shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 bg-primary text-primary-foreground hover:bg-primary/90"
+              className="h-16 px-14 rounded-full text-base font-semibold shadow-md hover:scale-[1.02] transition-transform transition-colors duration-200 bg-primary text-primary-foreground hover:bg-primary/90"
             >
               Get Started — It&apos;s Free
             </Button>
@@ -400,7 +345,7 @@ export default function Home() {
             <span className="flex items-center gap-1"><Check className="h-3 w-3" /> Cancel anytime</span>
             <span className="flex items-center gap-1"><Check className="h-3 w-3" /> Free forever plan</span>
           </p>
-        </motion.div>
+        </div>
       </section>
 
       {/* ───────── FOOTER ───────── */}
