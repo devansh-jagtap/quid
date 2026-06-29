@@ -257,12 +257,78 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Chart placeholder */}
-              <div className="rounded-2xl bg-muted/30 border border-border/30 h-52 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent pointer-events-none" />
-                <div className="flex flex-col items-center gap-2 text-muted-foreground/40">
-                  <BarChart3 className="h-8 w-8" />
-                  <span className="text-xs font-mono">Revenue Analytics</span>
+              {/* Revenue graph */}
+              <div className="rounded-2xl bg-muted/30 border border-border/30 p-5">
+                <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">
+                      Revenue Analytics
+                    </p>
+                    <h3 className="mt-1 text-xl font-bold tracking-tight">
+                      Paid vs pending
+                    </h3>
+                  </div>
+                  <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground">
+                    <span className="flex items-center gap-1.5">
+                      <span className="h-2 w-2 rounded-full bg-primary" />
+                      Paid
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="h-2 w-2 rounded-full bg-amber-400" />
+                      Pending
+                    </span>
+                  </div>
+                </div>
+
+                <div className="relative h-48 overflow-hidden rounded-xl border border-border/30 bg-background/60">
+                  <div className="absolute inset-x-5 top-5 bottom-8 grid grid-rows-4">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <div key={i} className="border-t border-border/30" />
+                    ))}
+                  </div>
+
+                  <svg
+                    viewBox="0 0 640 210"
+                    className="absolute inset-0 h-full w-full"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M0 172 C70 150 92 126 150 134 C217 144 238 76 305 88 C376 101 399 44 470 58 C548 73 574 36 640 30 L640 210 L0 210 Z"
+                      className="fill-primary/10"
+                    />
+                    <path
+                      d="M0 172 C70 150 92 126 150 134 C217 144 238 76 305 88 C376 101 399 44 470 58 C548 73 574 36 640 30"
+                      className="stroke-primary"
+                      strokeWidth="4"
+                      fill="none"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M0 158 C76 166 104 118 160 124 C222 131 249 114 316 122 C382 130 414 96 480 102 C552 109 584 84 640 90"
+                      className="stroke-amber-400"
+                      strokeWidth="3"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeDasharray="8 8"
+                    />
+                  </svg>
+
+                  <div className="absolute left-5 right-5 bottom-3 flex justify-between text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">
+                    <span>Jan</span>
+                    <span>Mar</span>
+                    <span>May</span>
+                    <span>Jul</span>
+                    <span>Sep</span>
+                    <span>Nov</span>
+                  </div>
+
+                  <div className="absolute right-5 top-5 rounded-lg border border-border/40 bg-background/90 px-3 py-2 shadow-sm">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                      This month
+                    </p>
+                    <p className="text-sm font-bold text-foreground">$8,420</p>
+                  </div>
                 </div>
               </div>
             </div>
